@@ -70,6 +70,9 @@ RUN yum -y remove wget gcc cpp glibc-devel glibc-headers kernel-headers libmpc m
 # clean up repo cache
 RUN yum clean all
 
+# remove temporary stuff
+RUN rm -rf /tmp/*
+
 # launch ipython notebook
 WORKDIR /notebooks
 CMD ipython notebook --no-browser --port 8888 --ip=* --matplotlib=inline
