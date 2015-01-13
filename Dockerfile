@@ -14,10 +14,10 @@ RUN yum -y update
 RUN yum -y install epel-release
 
 # install build tools
-RUN yum -y install wget gcc gcc-c++ gcc-gfortran swig gettext
+RUN yum -y install wget gcc gcc-c++ gcc-gfortran swig gettext make git
 
 # install python devel libs and package dependencies
-RUN yum -y install python-devel
+RUN yum -y install python-devel tkinter
 
 # install up to date version of pip
 RUN wget https://raw.github.com/pypa/pip/master/contrib/get-pip.py
@@ -26,6 +26,9 @@ RUN rm get-pip.py
 
 # install nose
 RUN pip install nose
+
+# install cython
+RUN pip install cython
 
 # install numpy
 RUN yum -y install lapack-devel atlas-devel blas-devel
@@ -37,8 +40,27 @@ RUN yum -y install fftw-devel suitesparse-devel
 RUN pip install scipy
 RUN python -c "import scipy; scipy.test('full')"
 
+# install pillow
+RUN yum -y install libtiff-devel libjpeg-devel libzip-devel freetype-devel lcms2-devel libwebp-devel tcl-devel tk-devel expat-devel fontconfig-devel libX11-devel libXau-devel libXft-devel libXrender-devel libxcb-devel xorg-x11-proto-devel zlib-devel
+RUN pip install pillow
+
+# install concurrent.futures
+RUN pip install futures
+
+# install twisted
+RUN pip install twisted
+
+# install pycares
+RUN pip install pycares
+
+# install Monotime
+RUN pip install Monotime
+
+# install tornado
+RUN pip install tornado
+
 # install matplotlib
-RUN yum -y install freetype-devel libpng-devel zlib-devel
+RUN yum -y install libpng-devel dejavu-sans-fonts dvipng texlive-latex-bin-bin ghostscript poppler-utils
 RUN pip install matplotlib
 RUN python -c "import matplotlib; matplotlib.test()"
 
@@ -47,10 +69,35 @@ RUN pip install sympy
 RUN python -c "import sympy; sympy.test()"
 
 # install scikit-learn
-#RUN pip install scikit-learn
+RUN pip install scikit-learn
+RUN nosetests --exe sklearn
+
+# install numexpr
+RUN pip install numexpr
+RUN python -c "import numexpr; numexpr.test()"
+
+# install bottleneck
+RUN pip install bottleneck
+RUN python -c "import bottleneck; bottleneck.test()"
+
+# install PyTables
+RUN yum -y install hdf5-devel lzo-devel
+RUN pip install git+git://github.com/pytables/pytables@develop
+
+# install SQLAlchemy
+
+# install statsmodels
+
+# install openpyxl, xlrd/xlwt
+
+# install xlsxwriter
+
+# install boto
 
 # install pandas
+#RUN yum -y install xsel
 #RUN pip install pandas
+#RUN nosetests pandas
 
 # install jinja2
 #RUN pip install jinja2
@@ -59,20 +106,23 @@ RUN python -c "import sympy; sympy.test()"
 #RUN yum -y install zeromq3 zeromq3-devel openpgm
 #RUN pip install pyzmq
 
-# install tornado
-#RUN pip install tornado
+# install pyreadline
+#RUN pip install pyreadline
+
+# install ipythonblocks
+#RUN pip install ipythonblocks
 
 # install ipython
 #RUN pip install ipython
 
 # clean up dependencies
-#RUN yum -y erase fftw-devel blas-devel lapack-devel suitesparse-devel atlas-devel freetype-devel libpng-devel zlib-devel zeromq3-devel
+#RUN yum -y erase fftw-devel blas-devel lapack-devel suitesparse-devel atlas-devel libtiff-devel libjpeg-devel libzip-devel freetype-devel lcms2-devel libwebp-devel tcl-devel tk-devel expat-devel fontconfig-devel libX11-devel libXau-devel libXft-devel libXrender-devel libxcb-devel xorg-x11-proto-devel zlib-devel libpng-devel hdf5-devel lzo-devel zeromq3-devel
 
 # clean up python devel libs used only for building
 #RUN yum -y remove python-devel
 
 # clean up build tools
-#RUN yum -y remove wget gcc cpp glibc-devel glibc-headers kernel-headers libmpc mpfr gcc-c++ libstdc++-devel gcc-gfortran libquadmath-devel swig gettext
+#RUN yum -y remove wget gcc cpp glibc-devel glibc-headers kernel-headers libmpc mpfr gcc-c++ libstdc++-devel gcc-gfortran libquadmath-devel swig gettext make git rsync perl
 
 # clean up repo cache
 #RUN yum clean all
