@@ -81,56 +81,80 @@ RUN pip install bottleneck
 RUN python -c "import bottleneck; bottleneck.test()"
 
 # install PyTables
-RUN yum -y install hdf5-devel lzo-devel
+RUN yum -y install hdf5-devel lzo-devel bzip2-devel
 RUN pip install git+git://github.com/pytables/pytables@develop
+RUN python -c "import tables; tables.test()"
 
 # install SQLAlchemy
-
-# install statsmodels
+RUN pip install sqlalchemy
 
 # install openpyxl, xlrd/xlwt
+RUN pip install openpyxl==1.6.1
+RUN pip install xlrd
+RUN pip install xlwt
 
 # install xlsxwriter
+RUN pip install xlsxwriter
 
 # install boto
+RUN pip install boto
+
+# install python-gflags
+RUN pip install python-gflags
+
+# install google-api-python-client
+RUN pip install google-api-python-client
+
+# install BeautifulSoup4
+RUN pip install BeautifulSoup4
+
+# install html5lib
+RUN pip install html5lib
+
+# install lxml
+RUN yum -y install libxml2-devel libxslt-devel xz-devel libgcrypt-devel libgpg-error-devel      
+RUN pip install lxml
 
 # install pandas
-#RUN yum -y install xsel
-#RUN pip install pandas
+RUN yum -y install xsel xclip
+RUN pip install pandas
 #RUN nosetests pandas
 
 # install jinja2
-#RUN pip install jinja2
+RUN pip install jinja2
 
 # install pyzmq
-#RUN yum -y install zeromq3 zeromq3-devel openpgm
-#RUN pip install pyzmq
+RUN yum -y install zeromq3 zeromq3-devel openpgm
+RUN pip install pyzmq
 
 # install pyreadline
-#RUN pip install pyreadline
+RUN pip install pyreadline
 
 # install ipythonblocks
-#RUN pip install ipythonblocks
+RUN pip install ipythonblocks
 
 # install ipython
-#RUN pip install ipython
+RUN pip install ipython
 
-# clean up dependencies
-#RUN yum -y erase fftw-devel blas-devel lapack-devel suitesparse-devel atlas-devel libtiff-devel libjpeg-devel libzip-devel freetype-devel lcms2-devel libwebp-devel tcl-devel tk-devel expat-devel fontconfig-devel libX11-devel libXau-devel libXft-devel libXrender-devel libxcb-devel xorg-x11-proto-devel zlib-devel libpng-devel hdf5-devel lzo-devel zeromq3-devel
+# install statsmodels
+RUN pip install statsmodels
+
+# clean up binary devel packages 
+RUN yum -y erase fftw-devel blas-devel lapack-devel suitesparse-devel atlas-devel libtiff-devel libjpeg-devel libzip-devel freetype-devel lcms2-devel libwebp-devel tcl-devel tk-devel expat-devel fontconfig-devel libX11-devel libXau-devel libXft-devel libXrender-devel libxcb-devel xorg-x11-proto-devel zlib-devel libpng-devel hdf5-devel lzo-devel bzip2-devel libxml2-devel libxslt-devel xz-devel libgcrypt-devel libgpg-error-devel zeromq3-devel
 
 # clean up python devel libs used only for building
-#RUN yum -y remove python-devel
+RUN yum -y remove python-devel
 
 # clean up build tools
-#RUN yum -y remove wget gcc cpp glibc-devel glibc-headers kernel-headers libmpc mpfr gcc-c++ libstdc++-devel gcc-gfortran libquadmath-devel swig gettext make git rsync perl
+RUN yum -y remove wget gcc cpp glibc-devel glibc-headers kernel-headers libmpc mpfr gcc-c++ libstdc++-devel gcc-gfortran libquadmath-devel swig gettext make git rsync perl
 
 # clean up repo cache
-#RUN yum clean all
+RUN yum clean all
 
 # remove temporary stuff
-#RUN rm -rf /tmp/*
+RUN rm -rf /tmp/*
 
 # launch ipython notebook
-#WORKDIR /notebooks
-#CMD ipython notebook --no-browser --port 8888 --ip=0.0.0.0 --matplotlib=inline
+WORKDIR /notebooks
+CMD ipython notebook --no-browser --port 8888 --ip=0.0.0.0 --matplotlib=inline
 
